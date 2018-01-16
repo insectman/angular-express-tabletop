@@ -1,0 +1,56 @@
+<h3>Table List</h3>
+<div *ngIf="tables" class="grid grid-pad">
+  <a *ngFor="let table of tables" class="col-1-4" 
+  [ngClass]="{'text-danger': table.values.state=='1'}" routerLink="/table/{{table.values.id}}">
+    <div class="module user">
+      <h4>{{table.values.tableName}}</h4>
+    </div>
+  </a>
+  <form (ngSubmit)="onSubmit()" [formGroup]="tableCreateForm" novalidate autocomplete="off">
+    <div class="form-group">
+      <label for="gameId">Game</label>
+
+      <select class="form-control" formControlName="gameId" name="gameId">
+        <option *ngFor="let game of games" [value]="game.values.id">{{game.values.name}}</option>
+      </select>
+
+    </div>
+
+    <div *ngIf="gameId.invalid && (gameId.dirty || gameId.touched)" class="alert alert-danger">
+
+      <div *ngIf="gameId.errors.required">
+        Game is required.
+      </div>
+      <div *ngIf="gameId.errors.notfound" class="error">
+        Game not found.
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <label for="tableName">Table Name</label>
+      <input type="text" class="form-control" id="tableName" formControlName="tableName" name="tableName">
+    </div>
+
+    <div *ngIf="tableName.invalid && (tableName.dirty || tableName.touched)" class="alert alert-danger">
+
+      <div *ngIf="tableName.errors.minlength">
+        Table name must be at least 2 characters long.
+      </div>
+
+      <div *ngIf="tableName.errors.required">
+        Table name is required.
+      </div>
+
+      <div *ngIf="tableName.errors.duplicate">
+        This table name is already taken. Please choose another name.
+      </div>
+
+    </div>
+
+    <button type="submit" [disabled]="!formValid" class="btn btn-success">Submit</button>
+  </form>
+</div>
+<div *ngIf="!tables" class="grid grid-pad">
+  Loading...
+</div>

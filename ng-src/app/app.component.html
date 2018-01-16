@@ -1,0 +1,18 @@
+<h1>{{title}}</h1>
+
+<div [hidden]="!loadingFinished">
+  <app-user-login [hidden]="userService.isLoggedIn"></app-user-login>
+  <div [hidden]="!userService.isLoggedIn">
+      <nav>
+        <a routerLink="/dashboard">Dashboard</a>
+        <a routerLink="/users">Users</a>
+        <a routerLink="/lobby">Lobby</a>
+        <a routerLink="" (click)="logout()">Log out</a>
+      </nav>
+      <router-outlet></router-outlet>
+      <app-messages></app-messages>
+  </div>
+</div>
+<div [hidden]="loadingFinished">
+  Loading...
+</div>

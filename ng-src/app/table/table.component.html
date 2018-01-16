@@ -1,0 +1,44 @@
+<div *ngIf="state.loadingFinished">
+  {{state.table.values.tableName}}
+  <p>Welcome to the {{state.gameName}} table, owned by {{state.ownerName}}</p>
+  <div>
+    Player list:
+    <div class="module user row" *ngFor="let userTable of state.userTables">
+      <div class="col-sm-6">
+        <a routerLink="/user/{{userTable.user.values.id}}">
+          <h4>{{userTable.user.values.username}}</h4>
+        </a>
+      </div>
+      <div class="col-sm-6">
+        <a *ngIf="state.table.values.state === '1'">
+          <div *ngIf="state.currentUser.values.id === userTable.user.values.id">
+            <button (click)="toggleUserTableReady()">
+              {{userTable.values.isReady === '1' ? 'Cancel' : 'Ready'}}
+            </button>
+          </div>
+          <div *ngIf="state.currentUser.values.id !== userTable.user.values.id 
+                          && userTable.values.isReady === '1' ">
+            Ready
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!state.isJoinedByCurrentUser && state.table.values.state === '0'">
+    <button (click)="joinTable()">Join</button>
+  </div>
+  <div *ngIf="state.isJoinedByCurrentUser">
+    <button (click)="leaveTable()">Leave</button>
+  </div>
+  <div *ngIf="state.isOwnedByCurrentUser" id="gameStartBar">
+    <div *ngIf="state.table.values.state === '0'">
+      <button (click)="toggleTableReady()">Start game</button>
+    </div>
+    <div *ngIf="state.table.values.state === '1'">
+      <button (click)="toggleTableReady()">Cancel game start</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="!state.loadingFinished">
+  Loading...
+</div>
